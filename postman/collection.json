@@ -1,0 +1,118 @@
+{
+  "info": {
+    "name": "SmartTask Incident Monitoring API - UAS",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Success 01 - Health Check",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8000/health"
+      }
+    },
+    {
+      "name": "Success 02 - Create Incident",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"API Gateway mengalami peningkatan error 5xx\",\n  \"department\": \"Infrastructure\",\n  \"priority\": \"Critical\",\n  \"assigned_to\": \"Rizky\",\n  \"impact\": \"Sebagian request user gagal diproses\"\n}"
+        },
+        "url": "http://127.0.0.1:8000/incidents"
+      }
+    },
+    {
+      "name": "Success 03 - Get Incidents",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8000/incidents"
+      }
+    },
+    {
+      "name": "Observability - Metrics",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8000/metrics"
+      }
+    },
+    {
+      "name": "Observability - Logs",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8000/logs"
+      }
+    },
+    {
+      "name": "Failure 01 - Invalid Body 400",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        },
+        "url": "http://127.0.0.1:8000/incidents"
+      }
+    },
+    {
+      "name": "Failure 02 - Not Found 404",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8000/incidents/INC-99999999-999"
+      }
+    },
+    {
+      "name": "Failure 03 - Rate Limit 429",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8000/rate-limit-test"
+      }
+    },
+    {
+      "name": "n8n Webhook Simulation to FastAPI",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"event\": \"incident.created\",\n  \"incident_id\": \"INC-20260705-001\",\n  \"status\": \"OPEN\",\n  \"source\": \"n8n-demo\"\n}"
+        },
+        "url": "http://127.0.0.1:8000/webhook/incident-created"
+      }
+    },
+    {
+      "name": "n8n Dashboard Webhook",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"event\": \"incident.created\",\n  \"incident_id\": \"INC-N8N-DEMO-001\",\n  \"priority\": \"Critical\",\n  \"source\": \"Postman to n8n dashboard\",\n  \"message\": \"Testing webhook integration from Postman to n8n\"\n}"
+        },
+        "url": "http://localhost:5678/webhook/smarttask-incident"
+      }
+    }
+  ]
+}
